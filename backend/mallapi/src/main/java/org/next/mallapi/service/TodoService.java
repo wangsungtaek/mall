@@ -2,6 +2,8 @@ package org.next.mallapi.service;
 
 import jakarta.transaction.Transactional;
 import org.next.mallapi.domain.Todo;
+import org.next.mallapi.dto.PageRequestDTO;
+import org.next.mallapi.dto.PageResponseDTO;
 import org.next.mallapi.dto.TodoDTO;
 
 @Transactional
@@ -14,6 +16,8 @@ public interface TodoService {
     void modity(TodoDTO dto);
 
     void remove(Long tno);
+
+    PageResponseDTO<TodoDTO> getList(PageRequestDTO pageRequestDTO);
 
     default TodoDTO entityToDTO(Todo todo) {
 

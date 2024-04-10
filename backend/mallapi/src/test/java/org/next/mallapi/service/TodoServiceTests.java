@@ -3,6 +3,8 @@ package org.next.mallapi.service;
 import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
+import org.next.mallapi.dto.PageRequestDTO;
+import org.next.mallapi.dto.PageResponseDTO;
 import org.next.mallapi.dto.TodoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -58,5 +60,13 @@ public class TodoServiceTests {
         Long tno = 102L;
 
         todoService.remove(tno);
+    }
+
+    @Test
+    public void testGetList() {
+
+        PageRequestDTO build = PageRequestDTO.builder().build();
+
+        log.info(todoService.getList(build));
     }
 }

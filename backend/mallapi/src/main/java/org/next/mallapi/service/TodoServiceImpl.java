@@ -3,11 +3,16 @@ package org.next.mallapi.service;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.next.mallapi.domain.Todo;
+import org.next.mallapi.dto.PageRequestDTO;
+import org.next.mallapi.dto.PageResponseDTO;
 import org.next.mallapi.dto.TodoDTO;
 import org.next.mallapi.repository.TodoRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Log4j2
@@ -56,5 +61,25 @@ public class TodoServiceImpl implements TodoService{
     public void remove(Long tno) {
 
         todoRepository.deleteById(tno);
+    }
+
+    @Override
+    public PageResponseDTO<TodoDTO> getList(PageRequestDTO pageRequestDTO) {
+
+        // JPA
+        Page<Todo> todos = todoRepository.search1(pageRequestDTO);
+
+        List<TodoDTO> dtoList = todos
+                .get()
+                .map(todo -> entityToDTO(todo)).collect(Collectors.toList());
+
+        PageResponseDTO<TodoDTO> responseDTO =
+                PageResponseDTO.<TodoDTO>withAll()
+                    .dtoList(dtoList)
+                    .pageRequestDTO(pageRequestDTO)
+                    .total(todos.getTotalElements())
+                    .build();
+
+        return responseDTO;
     }
 }
